@@ -1,0 +1,9 @@
+# backend node modules
+backend/node_modules/
+backend/build/
+
+backend/.env
+backend/config/default.json
+
+# frontend node modules
+frontend/node_modules/
