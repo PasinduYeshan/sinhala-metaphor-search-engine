@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-const HomePage = React.lazy(() => import('./pages/homePage'));
+const HomePage = React.lazy(() => import('./pages/HomePage'));
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

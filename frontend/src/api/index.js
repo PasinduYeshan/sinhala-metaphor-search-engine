@@ -96,12 +96,12 @@ const formDataConfig = {
 
 export default {
   query: {
-    async registerSA(queryData) {
+    async search(queryData) {
       return ajaxResolver(axios.post("/api/songs/", queryData));
     },
   },
   meta: {
-    async branches() {
+    async data() {
       return ajaxResolver(axios.get("/api/meta/aggregation"));
     },
   },

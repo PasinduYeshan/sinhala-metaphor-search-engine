@@ -48,7 +48,7 @@ export default function HomePage() {
               inputProps={{ "aria-label": "Without label" }}
             >
               {fieldFilterOptions.map((option) => (
-                <MenuItem value={option.value}>{option.label}</MenuItem>
+                <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
               ))}
             </Select>
             <FormHelperText>Filter by Fields</FormHelperText>
@@ -61,6 +61,53 @@ export default function HomePage() {
       <div className="flex p-4 row w-full">
         <div className="col col-8 p-2">
           {songDetails.map((song) => OutlinedCard({ song: song["_source"] }))}
+        </div>
+        <div className="col col-4 p-2">
+          <div className="flex flex-row">
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <Select
+                value={fieldFilter}
+                onChange={handleFieldFilterChange}
+                displayEmpty
+                inputProps={{ "aria-label": "Without label" }}
+              >
+                {fieldFilterOptions.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+                ))}
+              </Select>
+              <FormHelperText>Filter by Singers</FormHelperText>
+            </FormControl>
+          </div>
+          <div className="flex flex-row">
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <Select
+                value={fieldFilter}
+                onChange={handleFieldFilterChange}
+                displayEmpty
+                inputProps={{ "aria-label": "Without label" }}
+              >
+                {fieldFilterOptions.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+                ))}
+              </Select>
+              <FormHelperText>Filter by Lyricist</FormHelperText>
+            </FormControl>
+          </div>
+          <div className="flex flex-row">
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <Select
+                value={fieldFilter}
+                onChange={handleFieldFilterChange}
+                displayEmpty
+                inputProps={{ "aria-label": "Without label" }}
+              >
+                {fieldFilterOptions.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+                ))}
+              </Select>
+              <FormHelperText>Filter by Composer</FormHelperText>
+            </FormControl>
+          </div>
         </div>
       </div>
     </div>

@@ -92,7 +92,12 @@
       },
       "lyrics": {
         "type": "text",
-        "analyzer": "my_analyzer"
+        "analyzer": "my_analyzer",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+           }
+          }
       },
       "metaphor": {
         "type": "text",
