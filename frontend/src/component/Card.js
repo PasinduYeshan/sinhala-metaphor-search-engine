@@ -27,13 +27,6 @@ export default function OutlinedCard({ song }) {
             <Typography variant="h6" color="text.secondary" gutterBottom>
               Title Sin: {song["Title Sinhala"]}
             </Typography>
-            <Typography
-              sx={{ fontSize: 14 }}
-              color="text.secondary"
-              gutterBottom
-            >
-              Title Sin: {song["Title Sinhala"]}
-            </Typography>
             <Typography variant="body1">Singer English: {song["Singer English"]}</Typography>
             <Typography variant="body1">Singer Sinhala: {song["Singer Sinhala"]}</Typography>
             <Typography variant="body1">Lyricist English: {song["Lyricist English"]}</Typography>

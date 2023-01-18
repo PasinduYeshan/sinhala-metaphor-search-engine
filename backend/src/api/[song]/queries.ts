@@ -11,7 +11,6 @@ const named_entities = require("../../data/named_entities.json");
  */
 const searchSong: Handler = async (req: any, res: any) => {
   const { r } = res;
-  console.log(req.body.queryData);
   let query = req.body.queryData.query;
   const fieldFilter = req.body.queryData.fieldFilter;
 
@@ -60,7 +59,7 @@ const searchSong: Handler = async (req: any, res: any) => {
   });
 
   let fFields = [];
-  if (!fieldFilter || fieldFilter == "" || fieldFilter == "All") {
+  if (!fieldFilter || fieldFilter.length == 0) {
     fFields = [
       `Singer Sinhala^${b_singer}`,
       `Lyricist Sinhala^${b_lyricist}`,
@@ -80,9 +79,8 @@ const searchSong: Handler = async (req: any, res: any) => {
     ];
   }
   else {
-    fFields = [fieldFilter];
+    fFields = fieldFilter;
    }
-  console.log(fieldFilter, fFields);
   const body = await client.search({
     index: "songs",
     body: {
