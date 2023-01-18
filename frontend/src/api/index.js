@@ -1,9 +1,4 @@
 import axios from "axios";
-import store from "src/store";
-import jwtDecode from "jwt-decode";
-import { toast } from "react-toastify";
-import { useHistory } from "react-router-dom";
-import { thunks } from "src/store";
 
 /**
  * Setup Axios
@@ -12,34 +7,6 @@ const BASE_URL_REMOTE = "";
 const BASE_URL_LOCAL = "http://localhost:8000";
 
 axios.defaults.baseURL = BASE_URL_LOCAL;
-
-// Register access token with axios
-export const registerAccessToken = (token, history, dispatch) => {
-  if (token) {
-    const { exp } = jwtDecode(token);
-    if (Date.now() >= exp * 1000) {
-      toast.error("Your session has expired, please login again", {});
-      toast.success("You will be redirect to Login page", { delay: 300 });
-      dispatch(thunks.user.userLogout());
-      setTimeout(() => {
-        history.replace("/login");
-        return;
-      }, 2000);
-      return false;
-    }
-    axios.defaults.headers["Authorization"] = `Bearer ${token}`;
-    return true;
-  } else {
-    toast.error("Your session has expired, please login again");
-    toast.success("You will be redirect to Login page", { delay: 300 });
-    dispatch(thunks.user.userLogout());
-    setTimeout(() => {
-      history.replace("/login");
-      return;
-    }, 2000);
-    return false;
-  }
-};
 
 /**
  * Convert Axios Response into
@@ -97,12 +64,12 @@ const formDataConfig = {
 export default {
   query: {
     async search(queryData) {
-      return ajaxResolver(axios.post("/api/songs/", queryData));
+      return ajaxResolver(axios.post("/api/song/search", queryData));
     },
   },
   meta: {
     async data() {
-      return ajaxResolver(axios.get("/api/meta/aggregation"));
+      return ajaxResolver(axios.get("/api/song/agg"));
     },
   },
 };

@@ -30,7 +30,7 @@ async function generateApiKeys(opts) {
           index: [
             {
               names: ['songs'],
-              privileges: ['create_index', 'write', 'read', 'manage'],
+              privileges: ['create_index', 'write', 'read', 'manage', 'delete'],
             },
           ],
         },

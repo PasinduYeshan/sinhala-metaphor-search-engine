@@ -5,7 +5,7 @@
         "en_analyzer": {
           "type": "custom",
           "tokenizer": "standard",
-          "filter": ["stop_filter"]
+          "filter": ["stop_filter", "porter_stem", "lowercase"]
         },
         "sn_analyzer": {
           "type": "custom",
@@ -13,13 +13,9 @@
           "filter": [
             "sinhala_synonym_filter",
             "stop_filter",
-            "sinhala_ngram_filter"
+            "sinhala_ngram_filter",
+            "lowercase"
           ]
-        },
-        "en_analyzer": {
-          "type": "custom",
-          "tokenizer": "standard",
-          "filter": ["stop_filter", "porter_stem"]
         }
       },
       "filter": {
@@ -157,7 +153,7 @@
           }
         }
       },
-      "lyrics": {
+      "Lyrics": {
         "type": "text",
         "analyzer": "sn_analyzer",
         "fields": {
@@ -166,7 +162,7 @@
           }
         }
       },
-      "metaphor": {
+      "Metaphor": {
         "type": "text",
         "analyzer": "sn_analyzer",
         "fields": {
