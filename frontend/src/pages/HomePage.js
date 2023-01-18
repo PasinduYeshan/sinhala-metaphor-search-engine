@@ -18,6 +18,9 @@ export default function HomePage() {
   const [searchBarValue, setSearchBarValue] = useState("");
   const [songs, setSongs] = useState([]);
   const [aggregations, setAggregations] = useState([]);
+  const[singerFilter, setSingerFilter] = useState([]);
+  const [lyricistFilter, setLyricistFilter] = useState([]);
+  const [composerFilter, setComposerFilter] = useState([]);
 
   /**
    * Fetch meta data aggregations from backend
@@ -50,6 +53,9 @@ export default function HomePage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (!searchBarValue || searchBarValue == "") {
+      alert("Please enter a search query");
+    }
     await fetchData(searchBarValue, fieldFilter);
   };
 
@@ -80,18 +86,35 @@ export default function HomePage() {
 
   const handleFilterBySinger = async (event) => {
     const query = event.target.value;
+    setSingerFilter(query);
     await fetchData(query, "Singer Sinhala");
   };
 
   const handleFilterByLyricist = async (event) => {
     const query = event.target.value;
+    setLyricistFilter(query);
     await fetchData(query, "Lyricist Sinhala");
   };
 
   const handleFilterByComposer = async (event) => {
     const query = event.target.value;
+    setComposerFilter(query);
     await fetchData(query, "Composer Sinhala");
   };
+
+  /**
+   * Clear all the filters
+   */
+
+  const handleClear = async (event) => {
+    event.preventDefault();
+    setFieldFilter("");
+    setSearchBarValue("");
+    setSingerFilter("");
+    setLyricistFilter("");
+    setComposerFilter("");
+    setSongs([]);
+  }
 
   return (
     <div className="Container p-4">
@@ -123,10 +146,14 @@ export default function HomePage() {
           </FormControl>
         </div>
         <div className="col px-4">
-          <Button variant="outlined" onClick={handleSubmit}>
+          <Button className = "px-2" variant="outlined" onClick={handleSubmit}>
             Search
           </Button>
+          <Button variant="outlined" onClick={handleClear}>
+            Clear
+          </Button>
         </div>
+
       </div>
       <div className="grid grid-cols-3 gap-4">
         <div className="col-span-2">
@@ -138,7 +165,7 @@ export default function HomePage() {
           <div className="flex flex-row">
             <FormControl sx={{ m: 1, minWidth: 120 }}>
               <Select
-                value={fieldFilter}
+                value={singerFilter}
                 onChange={handleFilterBySinger}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
@@ -155,7 +182,7 @@ export default function HomePage() {
           <div className="flex flex-row">
             <FormControl sx={{ m: 1, minWidth: 120 }}>
               <Select
-                value={fieldFilter}
+                value={lyricistFilter}
                 onChange={handleFilterByLyricist}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
@@ -172,7 +199,7 @@ export default function HomePage() {
           <div className="flex flex-row">
             <FormControl sx={{ m: 1, minWidth: 120 }}>
               <Select
-                value={fieldFilter}
+                value={composerFilter}
                 onChange={handleFilterByComposer}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
