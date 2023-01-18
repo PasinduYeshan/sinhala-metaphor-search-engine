@@ -8,6 +8,8 @@ import MenuItem from "@mui/material/MenuItem";
 import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import AppBar from "@mui/material/AppBar";
+import Typography from "@mui/material/Typography";
 
 import OutlinedCard from "../component/Card";
 import api from "../api";
@@ -18,7 +20,7 @@ export default function HomePage() {
   const [searchBarValue, setSearchBarValue] = useState("");
   const [songs, setSongs] = useState([]);
   const [aggregations, setAggregations] = useState([]);
-  const[singerFilter, setSingerFilter] = useState([]);
+  const [singerFilter, setSingerFilter] = useState([]);
   const [lyricistFilter, setLyricistFilter] = useState([]);
   const [composerFilter, setComposerFilter] = useState([]);
 
@@ -114,104 +116,111 @@ export default function HomePage() {
     setLyricistFilter("");
     setComposerFilter("");
     setSongs([]);
-  }
+  };
 
   return (
-    <div className="Container p-4">
-      <div className="grid grid-cols-3 gap-4">
-        <div className=" px-4">
-          <TextField
-            id="outlined-basic"
-            label="Search Bar"
-            variant="outlined"
-            value={searchBarValue}
-            onChange={handleSearchBarChange}
-          />
-        </div>
-        <div className=" px-4">
-          <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <Select
-              value={fieldFilter}
-              onChange={handleFieldFilterChange}
-              displayEmpty
-              inputProps={{ "aria-label": "Without label" }}
-            >
-              {fieldFilterOptions.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Select>
-            <FormHelperText>Filter by Fields</FormHelperText>
-          </FormControl>
-        </div>
-        <div className="col px-4">
-          <Button className = "px-2" variant="outlined" onClick={handleSubmit}>
-            Search
-          </Button>
-          <Button variant="outlined" onClick={handleClear}>
-            Clear
-          </Button>
-        </div>
-
-      </div>
-      <div className="grid grid-cols-3 gap-4">
-        <div className="col-span-2">
-          {songs.length > 0
-            ? songs.map((song) => OutlinedCard({ song: song["_source"] }))
-            : ""}
-        </div>
-        <div className="">
-          <div className="flex flex-row">
+    <div className="Container p-0 m-0">
+      <AppBar position="static">
+        {" "}
+        <Typography variant="h6" color="inherit" component="div">
+          Sinhala Song Search Engine
+        </Typography>{" "}
+      </AppBar>
+      <div className="Container p-4">
+        <div className="grid grid-cols-3 gap-4">
+          <div className=" px-4">
+            <TextField
+              id="outlined-basic"
+              label="Search Bar"
+              variant="outlined"
+              value={searchBarValue}
+              onChange={handleSearchBarChange}
+            />
+          </div>
+          <div className=" px-4">
             <FormControl sx={{ m: 1, minWidth: 120 }}>
               <Select
-                value={singerFilter}
-                onChange={handleFilterBySinger}
+                value={fieldFilter}
+                onChange={handleFieldFilterChange}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
               >
-                {aggregations?.singer_agg?.buckets.map((option) => (
-                  <MenuItem key={option.key} value={option.key}>
-                    {option.key}
+                {fieldFilterOptions.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
                   </MenuItem>
                 ))}
               </Select>
-              <FormHelperText>Filter by Singers</FormHelperText>
+              <FormHelperText>Filter by Fields</FormHelperText>
             </FormControl>
           </div>
-          <div className="flex flex-row">
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <Select
-                value={lyricistFilter}
-                onChange={handleFilterByLyricist}
-                displayEmpty
-                inputProps={{ "aria-label": "Without label" }}
-              >
-                {aggregations?.lyricist_agg?.buckets.map((option) => (
-                  <MenuItem key={option.key} value={option.key}>
-                    {option.key}
-                  </MenuItem>
-                ))}
-              </Select>
-              <FormHelperText>Filter by Lyricist</FormHelperText>
-            </FormControl>
+          <div className="col px-4">
+            <Button className="px-2" variant="outlined" onClick={handleSubmit}>
+              Search
+            </Button>
+            <Button variant="outlined" onClick={handleClear}>
+              Clear
+            </Button>
           </div>
-          <div className="flex flex-row">
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <Select
-                value={composerFilter}
-                onChange={handleFilterByComposer}
-                displayEmpty
-                inputProps={{ "aria-label": "Without label" }}
-              >
-                {aggregations?.composer_agg?.buckets.map((option) => (
-                  <MenuItem key={option.key} value={option.key}>
-                    {option.key}
-                  </MenuItem>
-                ))}
-              </Select>
-              <FormHelperText>Filter by Composer</FormHelperText>
-            </FormControl>
+        </div>
+        <div className="grid grid-cols-3 gap-4">
+          <div className="col-span-2">
+            {songs.length > 0
+              ? songs.map((song) => OutlinedCard({ song: song["_source"] }))
+              : ""}
+          </div>
+          <div className="">
+            <div className="flex flex-row">
+              <FormControl sx={{ m: 1, minWidth: 120 }}>
+                <Select
+                  value={singerFilter}
+                  onChange={handleFilterBySinger}
+                  displayEmpty
+                  inputProps={{ "aria-label": "Without label" }}
+                >
+                  {aggregations?.singer_agg?.buckets.map((option) => (
+                    <MenuItem key={option.key} value={option.key}>
+                      {option.key}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>Filter by Singers</FormHelperText>
+              </FormControl>
+            </div>
+            <div className="flex flex-row">
+              <FormControl sx={{ m: 1, minWidth: 120 }}>
+                <Select
+                  value={lyricistFilter}
+                  onChange={handleFilterByLyricist}
+                  displayEmpty
+                  inputProps={{ "aria-label": "Without label" }}
+                >
+                  {aggregations?.lyricist_agg?.buckets.map((option) => (
+                    <MenuItem key={option.key} value={option.key}>
+                      {option.key}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>Filter by Lyricist</FormHelperText>
+              </FormControl>
+            </div>
+            <div className="flex flex-row">
+              <FormControl sx={{ m: 1, minWidth: 120 }}>
+                <Select
+                  value={composerFilter}
+                  onChange={handleFilterByComposer}
+                  displayEmpty
+                  inputProps={{ "aria-label": "Without label" }}
+                >
+                  {aggregations?.composer_agg?.buckets.map((option) => (
+                    <MenuItem key={option.key} value={option.key}>
+                      {option.key}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>Filter by Composer</FormHelperText>
+              </FormControl>
+            </div>
           </div>
         </div>
       </div>
