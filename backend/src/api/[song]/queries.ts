@@ -32,6 +32,8 @@ const searchSong: Handler = async (req: any, res: any) => {
   const { r } = res;
   console.log(req.body.queryData);
   let query = req.body.queryData.query;
+  const fieldFilter = req.body.queryData.fieldFilter;
+
   let query_words = query.trim().split(" ");
   let removing_query_words: any = []; // Check if elastic search remove the stop words
 
@@ -76,6 +78,30 @@ const searchSong: Handler = async (req: any, res: any) => {
     query = query.replace(word, "");
   });
 
+  let fFields = [];
+  if (!fieldFilter || fieldFilter == "" || fieldFilter == "All") {
+    fFields = [
+      `Singer Sinhala^${b_singer}`,
+      `Lyricist Sinhala^${b_lyricist}`,
+      `Title Sinhala^${b_title}`,
+      `Lyrics^${b_unformatted_lyrics}`,
+      `Source Domain`,
+      `Target Domain`,
+      "Singer English",
+      "Lyricist English",
+      "Composer Sinhala",
+      "Composer English",
+      "Lyrics",
+      "Metaphor",
+      "Source Domain",
+      "Target Domain",
+      "Interpretation",
+    ];
+  }
+  else {
+    fFields = [fieldFilter];
+   }
+  console.log(fieldFilter, fFields);
   const body = await client.search({
     index: "songs",
     body: {
@@ -102,41 +128,25 @@ const searchSong: Handler = async (req: any, res: any) => {
       query: {
         multi_match: {
           query: query.trim(),
-          fields: [
-            `Singer Sinhala^${b_singer}`,
-            `Lyricist Sinhala^${b_lyricist}`,
-            `Title Sinhala^${b_title}`,
-            `Lyrics^${b_unformatted_lyrics}`,
-            `Source Domain`,
-            `Target Domain`,
-            "Singer English",
-            "Lyricist English",
-            "Composer Sinhala",
-            "Composer English",
-            "Lyrics",
-            "Metaphor",
-            "Source Domain",
-            "Target Domain",
-            "Interpretation",
-          ],
+          fields: fFields,
           operator: "or",
           type: field_type,
         },
       },
       aggs: {
-        singer_filter: {
+        singer_agg: {
           terms: {
             field: "Singer Sinhala.keyword",
             size: 10,
           },
         },
-        lyricist_filter: {
+        lyricist_agg: {
           terms: {
             field: "Lyricist Sinhala.keyword",
             size: 10,
           },
         },
-        composer_filter: {
+        composer_agg: {
           terms: {
             field: "Composer Sinhala.keyword",
             size: 10,
@@ -147,7 +157,6 @@ const searchSong: Handler = async (req: any, res: any) => {
   });
 
   if (body) {
-    console.log("body", body);
     r.status
       .OK()
       .message("Success")

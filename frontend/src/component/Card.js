@@ -34,12 +34,12 @@ export default function OutlinedCard({ song }) {
             >
               Title Sin: {song["Title Sinhala"]}
             </Typography>
-            <Typography variant="body1">Singer: {song["Singer English"]}</Typography>
-            <Typography variant="body1">Singer: {song["Singer Sinhala"]}</Typography>
-            <Typography variant="body1">Singer: {song["Lyricist English"]}</Typography>
-            <Typography variant="body1">Singer: {song["Lyricist Sinhala"]}</Typography>
-            <Typography variant="body1">Singer: {song["Composer English"]}</Typography>
-            <Typography variant="body1">Singer: {song["Composer Sinhala"]}</Typography>
+            <Typography variant="body1">Singer English: {song["Singer English"]}</Typography>
+            <Typography variant="body1">Singer Sinhala: {song["Singer Sinhala"]}</Typography>
+            <Typography variant="body1">Lyricist English: {song["Lyricist English"]}</Typography>
+            <Typography variant="body1">Lyricist Sinhala: {song["Lyricist Sinhala"]}</Typography>
+            <Typography variant="body1">Composer English: {song["Composer English"]}</Typography>
+            <Typography variant="body1">Composer Sinhala: {song["Composer Sinhala"]}</Typography>
             {/* <Typography variant="h5" component="div">
               be{bull}nev{bull}o{bull}lent
             </Typography> */}

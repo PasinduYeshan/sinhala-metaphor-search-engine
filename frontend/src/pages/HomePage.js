@@ -20,6 +20,7 @@ export default function HomePage() {
   const [aggregations, setAggregations] = useState([]);
 
   const handleFieldFilterChange = (event) => {
+    console.log(event.target.value);
     setFieldFilter(event.target.value);
   };
 
@@ -47,6 +48,12 @@ export default function HomePage() {
       console.log(error);
     }
   };
+
+  const handleFilterBySinger = () => {};
+
+  const handleFilterByLyricist = () => {};
+
+  const handleFilterByComposer = () => {};
 
   return (
     <div className="Container p-4">
@@ -85,20 +92,22 @@ export default function HomePage() {
       </div>
       <div className="grid grid-cols-3 gap-4">
         <div className="col-span-2">
-          {songs.length > 0 ? songs.map((song) => OutlinedCard({ song: song["_source"] })): ""}
+          {songs.length > 0
+            ? songs.map((song) => OutlinedCard({ song: song["_source"] }))
+            : ""}
         </div>
         <div className="">
           <div className="flex flex-row">
             <FormControl sx={{ m: 1, minWidth: 120 }}>
               <Select
                 value={fieldFilter}
-                onChange={handleFieldFilterChange}
+                onChange={handleFilterBySinger}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
               >
-                {fieldFilterOptions.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
+                {aggregations?.singer_agg?.buckets.map((option) => (
+                  <MenuItem key={option.key} value={option.key}>
+                    {option.key}
                   </MenuItem>
                 ))}
               </Select>
@@ -109,13 +118,13 @@ export default function HomePage() {
             <FormControl sx={{ m: 1, minWidth: 120 }}>
               <Select
                 value={fieldFilter}
-                onChange={handleFieldFilterChange}
+                onChange={handleFilterByLyricist}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
               >
-                {fieldFilterOptions.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
+                {aggregations?.lyricist_agg?.buckets.map((option) => (
+                  <MenuItem key={option.key} value={option.key}>
+                    {option.key}
                   </MenuItem>
                 ))}
               </Select>
@@ -126,13 +135,13 @@ export default function HomePage() {
             <FormControl sx={{ m: 1, minWidth: 120 }}>
               <Select
                 value={fieldFilter}
-                onChange={handleFieldFilterChange}
+                onChange={handleFilterByComposer}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
               >
-                {fieldFilterOptions.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
+                {aggregations?.composer_agg?.buckets.map((option) => (
+                  <MenuItem key={option.key} value={option.key}>
+                    {option.key}
                   </MenuItem>
                 ))}
               </Select>
@@ -146,6 +155,10 @@ export default function HomePage() {
 }
 
 const fieldFilterOptions = [
+  {
+    value: "All",
+    label: "All",
+  },
   {
     value: "Title Sinhala",
     label: "Title Sinhala",
@@ -199,4 +212,3 @@ const fieldFilterOptions = [
     value: "Lyrics",
   },
 ];
-
