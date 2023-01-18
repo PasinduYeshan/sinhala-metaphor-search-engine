@@ -2,16 +2,83 @@
   "settings": {
     "analysis": {
       "analyzer": {
-        "my_analyzer": {
+        "en_analyzer": {
           "type": "custom",
           "tokenizer": "standard",
-          "filter": ["stop"]
+          "filter": ["stop_filter"]
+        },
+        "sn_analyzer": {
+          "type": "custom",
+          "tokenizer": "icu_tokenizer",
+          "filter": [
+            "sinhala_synonym_filter",
+            "stop_filter",
+            "sinhala_ngram_filter"
+          ]
+        },
+        "en_analyzer": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": ["stop_filter", "porter_stem"]
         }
       },
       "filter": {
-        "stop": {
+        "stop_filter": {
           "type": "stop",
-          "stopwords": ["ගත්කරු", "රචකයා", "ලියන්නා", "ලියන", "රචිත", "ලියපු", "ලියව්‌ව", "රචනා", "රචක", "ලියන්", "ලිවූ", "ගායකයා", "ගයනවා", "ගායනා", "ගායනා", "ගැයු", "ගයන", "කිව්", "කිවු", "සංගීත", "සංගීතවත්", "සංගීතය", "වර්ගය", "වර්‍ගයේ", "වර්ගයේම", "වර්ගයේ", "වැනි", "ඇතුලත්", "ඇතුලු", "විදියේ", "විදිහේ", "හොඳම", "ජනප්‍රිය", "ප්‍රචලිත", "ප්‍රසිද්ධම", "හොදම", "ජනප්‍රියම", "ලස්සනම", "ගීත", "සිංදු", "ගී", "සින්දු"]
+          "stopwords": [
+            "ගත්කරු",
+            "රචකයා",
+            "ලියන්නා",
+            "ලියන",
+            "රචිත",
+            "ලියපු",
+            "ලියව්‌ව",
+            "රචනා",
+            "රචක",
+            "ලියන්",
+            "ලිවූ",
+            "ගායකයා",
+            "ගයනවා",
+            "ගායනා",
+            "ගායනා",
+            "ගැයු",
+            "ගයන",
+            "කිව්",
+            "කිවු",
+            "සංගීත",
+            "සංගීතවත්",
+            "සංගීතය",
+            "වර්ගය",
+            "වර්‍ගයේ",
+            "වර්ගයේම",
+            "වර්ගයේ",
+            "වැනි",
+            "ඇතුලත්",
+            "ඇතුලු",
+            "විදියේ",
+            "විදිහේ",
+            "හොඳම",
+            "ජනප්‍රිය",
+            "ප්‍රචලිත",
+            "ප්‍රසිද්ධම",
+            "හොදම",
+            "ජනප්‍රියම",
+            "ලස්සනම",
+            "ගීත",
+            "සිංදු",
+            "ගී",
+            "සින්දු"
+          ]
+        },
+        "sinhala_ngram_filter": {
+          "type": "edge_ngram",
+          "min_gram": "3",
+          "max_gram": "6",
+          "side": "front"
+        },
+        "sinhala_synonym_filter": {
+          "type": "synonym",
+          "synonyms_path": "synonyms.txt"
         }
       }
     }
@@ -20,120 +87,120 @@
     "properties": {
       "Title Sinhala": {
         "type": "text",
-        "analyzer": "my_analyzer",
+        "analyzer": "sn_analyzer",
         "fields": {
           "keyword": {
             "type": "keyword"
-              }
           }
+        }
       },
       "Title English": {
         "type": "text",
-        "analyzer": "my_analyzer",
+        "analyzer": "en_analyzer",
         "fields": {
           "keyword": {
             "type": "keyword"
-              }
           }
+        }
       },
       "Singer Sinhala": {
         "type": "text",
-        "analyzer": "my_analyzer",
+        "analyzer": "sn_analyzer",
         "fields": {
           "keyword": {
             "type": "keyword"
-           }
           }
+        }
       },
       "Singer English": {
         "type": "text",
-        "analyzer": "my_analyzer",
+        "analyzer": "en_analyzer",
         "fields": {
           "keyword": {
             "type": "keyword"
-           }
           }
+        }
       },
       "Lyricist Sinhala": {
         "type": "text",
-        "analyzer": "my_analyzer",
+        "analyzer": "sn_analyzer",
         "fields": {
           "keyword": {
             "type": "keyword"
-           }
           }
+        }
       },
       "Lyricist English": {
         "type": "text",
-        "analyzer": "my_analyzer",
+        "analyzer": "en_analyzer",
         "fields": {
           "keyword": {
             "type": "keyword"
-           }
           }
+        }
       },
       "Composer Sinhala": {
         "type": "text",
-        "analyzer": "my_analyzer",
+        "analyzer": "sn_analyzer",
         "fields": {
           "keyword": {
             "type": "keyword"
-           }
           }
+        }
       },
       "Composer English": {
         "type": "text",
-        "analyzer": "my_analyzer",
+        "analyzer": "en_analyzer",
         "fields": {
           "keyword": {
             "type": "keyword"
-           }
           }
+        }
       },
       "lyrics": {
         "type": "text",
-        "analyzer": "my_analyzer",
+        "analyzer": "sn_analyzer",
         "fields": {
           "keyword": {
             "type": "keyword"
-           }
           }
+        }
       },
       "metaphor": {
         "type": "text",
-        "analyzer": "my_analyzer",
+        "analyzer": "sn_analyzer",
         "fields": {
           "keyword": {
             "type": "keyword"
-           }
           }
+        }
       },
       "Source Domain": {
         "type": "text",
-        "analyzer": "my_analyzer",
+        "analyzer": "sn_analyzer",
         "fields": {
           "keyword": {
             "type": "keyword"
-           }
           }
+        }
       },
       "Target Domain": {
         "type": "text",
-        "analyzer": "my_analyzer",
+        "analyzer": "sn_analyzer",
         "fields": {
           "keyword": {
             "type": "keyword"
-           }
           }
+        }
       },
       "Interpretation": {
         "type": "text",
-        "analyzer": "my_analyzer",
+        "analyzer": "sn_analyzer",
         "fields": {
           "keyword": {
             "type": "keyword"
-           }
           }
+        }
       }
     }
   }
