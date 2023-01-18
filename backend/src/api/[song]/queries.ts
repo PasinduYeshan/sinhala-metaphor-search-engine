@@ -4,29 +4,10 @@ import client from "../../utils/elasticsearch";
 
 const keywords = require("../../data/keywords.json");
 const named_entities = require("../../data/named_entities.json");
-/**
- * :: STEP 1
- * Validate Request
- */
-// const inspector = inspectBuilder(
-//     body("firstName").optional().isString().withMessage("firstName is required"),
-//     body("lastName").optional().isString().withMessage("lastName is is required"),
-//     body("email").optional().isEmail().withMessage("email is required"),
-//     body("telephone").optional().isMobilePhone("any").withMessage("telephone is required"),
-//     param("userId").optional().isUUID().withMessage("invalid user id")
-// )
 
 /**
  * :: STEP 2
  * Search song
- */
-
-/**
- *
- * query : {
- * "query": "",
- * "filterField" : "Singer Sinhala"
- * }
  */
 const searchSong: Handler = async (req: any, res: any) => {
   const { r } = res;
