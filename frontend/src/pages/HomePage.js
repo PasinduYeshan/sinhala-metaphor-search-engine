@@ -83,7 +83,7 @@ export default function HomePage() {
         queryData: {
           query: queryValue,
           fieldFilter: fieldValue,
-          phraseSearch: phraseSearch
+          phraseSearch: phraseSearch,
         },
       });
       console.log(res);
@@ -383,12 +383,7 @@ export default function HomePage() {
           </FormGroup>
         </div>
       </div>
-      <div className="grid grid-cols-3 gap-4">
-        <div className="col-span-2">
-          {songs.length > 0
-            ? songs.map((song) => OutlinedCard({ song: song["_source"] }))
-            : ""}
-        </div>
+      <div className="grid grid-cols-3 gap-4 pt-4 pl-4">
         <div className="">
           <div className="flex flex-row">
             <FormControl sx={{ m: 1, minWidth: 120 }}>
@@ -441,6 +436,11 @@ export default function HomePage() {
               <FormHelperText>Filter by Composer</FormHelperText>
             </FormControl>
           </div>
+        </div>
+        <div className="col-span-2">
+          {songs.length > 0
+            ? songs.map((song) => OutlinedCard({ song: song["_source"] }))
+            : ""}
         </div>
       </div>
     </div>
