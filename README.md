@@ -27,3 +27,4 @@ In the root folder run `setup.sh`. It will crete the index and add bulk songs to
 
 ### Setting up back end
 Go to backend folder by running `cd ./backend` in terminal.
+

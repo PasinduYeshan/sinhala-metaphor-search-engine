@@ -83,6 +83,7 @@ export default function HomePage() {
         queryData: {
           query: queryValue,
           fieldFilter: fieldValue,
+          phraseSearch: phraseSearch
         },
       });
       console.log(res);
@@ -212,6 +213,7 @@ export default function HomePage() {
                     checked={phraseSearch}
                     onChange={(e) => {
                       setPhraseSearch(e.target.checked);
+                      console.log("Changed");
                     }}
                     name="Phrase Search"
                   />

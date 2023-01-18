@@ -13,6 +13,8 @@ const searchSong: Handler = async (req: any, res: any) => {
   const { r } = res;
   let query = req.body.queryData.query;
   const fieldFilter = req.body.queryData.fieldFilter;
+  const phraseSearch = req.body.queryData.phraseSearch;
+  console.log(phraseSearch);
 
   let query_words = query.trim().split(" ");
   let removing_query_words: any = []; // Check if elastic search remove the stop words
@@ -53,11 +55,13 @@ const searchSong: Handler = async (req: any, res: any) => {
       }
     });
   }
-
   removing_query_words.forEach((word: string) => {
     query = query.replace(word, "");
   });
 
+  /**
+   * Choose fields to search
+   */
   let fFields = [];
   if (!fieldFilter || fieldFilter.length == 0) {
     fFields = [
@@ -77,10 +81,18 @@ const searchSong: Handler = async (req: any, res: any) => {
       "Target Domain",
       "Interpretation",
     ];
-  }
-  else {
+  } else {
     fFields = fieldFilter;
-   }
+  }
+
+  /**
+   * Choose operator
+   */
+  let ope = "or";
+  if (phraseSearch) {
+    ope = "and";
+  }
+
   const body = await client.search({
     index: "songs",
     body: {
@@ -108,7 +120,7 @@ const searchSong: Handler = async (req: any, res: any) => {
         multi_match: {
           query: query.trim(),
           fields: fFields,
-          operator: "or",
+          operator: ope,
           type: field_type,
         },
       },
