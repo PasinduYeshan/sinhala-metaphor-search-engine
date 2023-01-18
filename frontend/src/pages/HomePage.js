@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -19,6 +19,26 @@ export default function HomePage() {
   const [songs, setSongs] = useState([]);
   const [aggregations, setAggregations] = useState([]);
 
+  /**
+   * Fetch meta data aggregations from backend
+   */
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const metaData = await api.meta.data();
+        console.log(metaData.data);
+        setAggregations(metaData.data.aggregations);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData().catch((err) => console.log(err));
+  }, []);
+
+  /**
+   * Handlers
+   * @param {*} event
+   */
   const handleFieldFilterChange = (event) => {
     console.log(event.target.value);
     setFieldFilter(event.target.value);
@@ -30,11 +50,20 @@ export default function HomePage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    await fetchData(searchBarValue, fieldFilter);
+  };
+
+  /**
+   * Fetch songs from backend
+   * @param {*} queryValue
+   * @param {*} fieldValue
+   */
+  const fetchData = async (queryValue, fieldValue) => {
     try {
       const res = await api.query.search({
         queryData: {
-          query: searchBarValue,
-          fieldFilter: fieldFilter,
+          query: queryValue,
+          fieldFilter: fieldValue,
         },
       });
       console.log(res);
@@ -49,11 +78,20 @@ export default function HomePage() {
     }
   };
 
-  const handleFilterBySinger = () => {};
+  const handleFilterBySinger = async (event) => {
+    const query = event.target.value;
+    await fetchData(query, "Singer Sinhala");
+  };
 
-  const handleFilterByLyricist = () => {};
+  const handleFilterByLyricist = async (event) => {
+    const query = event.target.value;
+    await fetchData(query, "Lyricist Sinhala");
+  };
 
-  const handleFilterByComposer = () => {};
+  const handleFilterByComposer = async (event) => {
+    const query = event.target.value;
+    await fetchData(query, "Composer Sinhala");
+  };
 
   return (
     <div className="Container p-4">

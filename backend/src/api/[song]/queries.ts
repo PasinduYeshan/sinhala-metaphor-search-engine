@@ -118,19 +118,16 @@ const searchSong: Handler = async (req: any, res: any) => {
         singer_agg: {
           terms: {
             field: "Singer Sinhala.keyword",
-            size: 10,
           },
         },
         lyricist_agg: {
           terms: {
             field: "Lyricist Sinhala.keyword",
-            size: 10,
           },
         },
         composer_agg: {
           terms: {
             field: "Composer Sinhala.keyword",
-            size: 10,
           },
         },
       },

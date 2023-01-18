@@ -69,7 +69,7 @@ export default {
   },
   meta: {
     async data() {
-      return ajaxResolver(axios.get("/api/song/agg"));
+      return ajaxResolver(axios.get("/api/song/meta"));
     },
   },
 };
