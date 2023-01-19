@@ -28,7 +28,7 @@ const searchSong: Handler = async (req: any, res: any) => {
   let b_title = 1;
   let b_lyricist = 1;
 
-  field_type = "cross_fields";
+  field_type = "best_fields";
 
   // Change the field type if user want to search query as an phrase
   if (phraseSearch) {
@@ -61,11 +61,11 @@ const searchSong: Handler = async (req: any, res: any) => {
 
     // Check for keywords
     if (keywords.singer.includes(word)) {
-      b_singer = b_singer + 1;
+      b_singer = b_singer + 2;
       rm_query_key_words.push(word);
     }
     if (keywords.lyricist.includes(word)) {
-      b_lyricist = b_lyricist + 1;
+      b_lyricist = b_lyricist + 2;
       rm_query_key_words.push(word);
     }
     if (keywords.song.includes(word)) {
@@ -78,7 +78,6 @@ const searchSong: Handler = async (req: any, res: any) => {
   rm_query_key_words.forEach((word: string) => {
     query = query.replace(word, "");
   });
-
   /**
    * Choose fields to search
    */
