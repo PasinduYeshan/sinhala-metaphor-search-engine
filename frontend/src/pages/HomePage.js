@@ -28,6 +28,7 @@ export default function HomePage() {
   const [lyricistFilter, setLyricistFilter] = useState([]);
   const [composerFilter, setComposerFilter] = useState([]);
   const [phraseSearch, setPhraseSearch] = useState(false);
+  const [mustInclude, setMustInclude] = useState(false);
 
   /**
    * Fetch meta data aggregations from backend
@@ -84,6 +85,7 @@ export default function HomePage() {
           query: queryValue,
           fieldFilter: fieldValue,
           phraseSearch: phraseSearch,
+          mustInclude: mustInclude,
         },
       });
       console.log(res);
@@ -205,21 +207,35 @@ export default function HomePage() {
               onChange={handleSearchBarChange}
             />
           </div>
-          <div className=" px-4">
+          <div className="flex flex-row px-4">
             <FormGroup>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={phraseSearch}
-                    onChange={(e) => {
-                      setPhraseSearch(e.target.checked);
-                      console.log("Changed");
-                    }}
-                    name="Phrase Search"
-                  />
-                }
-                label="Phrase Search"
-              />
+              <div className="flex flex-row">
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={phraseSearch}
+                      onChange={(e) => {
+                        setPhraseSearch(e.target.checked);
+                        console.log("Changed");
+                      }}
+                      name="Phrase Search"
+                    />
+                  }
+                  label="Phrase Search"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={mustInclude}
+                      onChange={(e) => {
+                        setMustInclude(e.target.checked);
+                      }}
+                      name="Must Include"
+                    />
+                  }
+                  label="Must Include"
+                />
+              </div>
             </FormGroup>
           </div>
 
@@ -383,7 +399,7 @@ export default function HomePage() {
           </FormGroup>
         </div>
       </div>
-      <div className="grid grid-cols-3 gap-4 pt-4 pl-4">
+      <div className="grid grid-cols-3 gap-4 px-4">
         <div className="">
           <div className="flex flex-row">
             <FormControl sx={{ m: 1, minWidth: 120 }}>
@@ -436,6 +452,10 @@ export default function HomePage() {
               <FormHelperText>Filter by Composer</FormHelperText>
             </FormControl>
           </div>
+
+          <Typography variant="h6" color="text.secondary" gutterBottom>
+            Number of Results: {songs.length}
+          </Typography>
         </div>
         <div className="col-span-2">
           {songs.length > 0

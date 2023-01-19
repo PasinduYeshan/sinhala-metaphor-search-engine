@@ -14,10 +14,10 @@ const searchSong: Handler = async (req: any, res: any) => {
   let query = req.body.queryData.query;
   const fieldFilter = req.body.queryData.fieldFilter;
   const phraseSearch = req.body.queryData.phraseSearch;
-  console.log(phraseSearch);
+  const mustInclude = req.body.queryData.mustInclude;
 
   let query_words = query.trim().split(" ");
-  let removing_query_words: any = []; // Check if elastic search remove the stop words
+  let rm_query_key_words: any = [];
 
   let size = 100;
 
@@ -28,34 +28,54 @@ const searchSong: Handler = async (req: any, res: any) => {
   let b_title = 1;
   let b_lyricist = 1;
 
-  if (query_words.length > 8) {
-    b_unformatted_lyrics = b_unformatted_lyrics + 2;
-    field_type = "best_fields";
-  } else {
-    field_type = "cross_fields";
-    query_words.forEach((word: string) => {
-      word = word.replace("ගේ", ""); // Remove the suffix
-      word = word.replace("යන්ගේ", "");
-      if (named_entities.artist_names.includes(word)) {
-        b_singer = b_singer + 1;
-      }
-      if (named_entities.writer_names.includes(word)) {
-        b_lyricist = b_lyricist + 1;
-      }
-      if (keywords.artist.includes(word)) {
-        b_singer = b_singer + 1;
-        removing_query_words.push(word);
-      }
-      if (keywords.write.includes(word)) {
-        b_lyricist = b_lyricist + 1;
-        removing_query_words.push(word);
-      }
-      if (keywords.song.includes(word)) {
-        removing_query_words.push(word);
-      }
-    });
+  field_type = "cross_fields";
+
+  // Change the field type if user want to search query as an phrase
+  if (phraseSearch) {
+    field_type = "phrase";
   }
-  removing_query_words.forEach((word: string) => {
+
+  // Change operator to "and" if user selects must include all the words
+  let ope = "or";
+  if (mustInclude) {
+    ope = "and";
+  }
+
+  /**
+   * Remove the suffix from the query
+   * Check if the query contains any lyricist or singer name and boost the relevant fields accordingly
+   */
+  query_words.forEach((word: string) => {
+    // Remove the suffix
+    word = word.replace("ගේ", ""); 
+    word = word.replace("යන්ගේ", "");
+    word = word.replace("න්ගේ", "");
+    word = word.replace("යන්", "");
+
+    if (named_entities.singer_names.includes(word)) {
+      b_singer = b_singer + 1;
+    }
+    if (named_entities.lyricist_names.includes(word)) {
+      b_lyricist = b_lyricist + 1;
+    }
+
+    // Check for keywords
+    if (keywords.singer.includes(word)) {
+      b_singer = b_singer + 1;
+      rm_query_key_words.push(word);
+    }
+    if (keywords.lyricist.includes(word)) {
+      b_lyricist = b_lyricist + 1;
+      rm_query_key_words.push(word);
+    }
+    if (keywords.song.includes(word)) {
+      rm_query_key_words.push(word);
+    }
+
+  });
+
+
+  rm_query_key_words.forEach((word: string) => {
     query = query.replace(word, "");
   });
 
@@ -68,7 +88,7 @@ const searchSong: Handler = async (req: any, res: any) => {
       `Singer Sinhala^${b_singer}`,
       `Lyricist Sinhala^${b_lyricist}`,
       `Title Sinhala^${b_title}`,
-      `Lyrics^${b_unformatted_lyrics}`,
+      `Lyrics`,
       `Source Domain`,
       `Target Domain`,
       "Singer English",
@@ -85,13 +105,7 @@ const searchSong: Handler = async (req: any, res: any) => {
     fFields = fieldFilter;
   }
 
-  /**
-   * Choose operator
-   */
-  let ope = "or";
-  if (phraseSearch) {
-    ope = "and";
-  }
+  
 
   const body = await client.search({
     index: "songs",
@@ -101,7 +115,7 @@ const searchSong: Handler = async (req: any, res: any) => {
         includes: [
           "Target Domain",
           "Source Domain",
-          "Title Sinahala",
+          "Title Sinhala",
           "Title English",
           "Singer Sinhala",
           "Singer English",

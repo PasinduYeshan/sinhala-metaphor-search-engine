@@ -1,10 +1,25 @@
 ## For demonstration
 
-1. Phrase search
+Phrase search
+Eg:
+query : දොර කවුළු
+
+Must include
 Eg:
 query : සල් මල්
 
-Use "and" operator inside the multi_match query instead of default "or" operator.
+Stop Words
+Eg:
+query : අමරසිරි පීරිස් ගීත
 
-2. Field Search
+Field Search
+Eg:
+query : කසුන් කල්හාර
+
+Synonym Search
+Eg:
+query: ආදරය
+field: Source Domain
+
+
 
